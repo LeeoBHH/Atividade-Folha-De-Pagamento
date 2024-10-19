@@ -1,0 +1,57 @@
+# Leonardo Araujo De Miranda Dos Santos
+# G93313
+
+def calcular_inss(salario):
+    if salario <= 1100.00:
+        inss = salario * 0.075
+    elif salario <= 2203.48:
+        inss = salario * 0.09
+    elif salario <= 3305.22:
+        inss = salario * 0.12
+    elif salario <= 6433.57:
+        inss = salario * 0.14
+    else:
+        inss = 854.36
+    
+    return inss
+
+def calcular_irrf(salario):
+    if salario <= 2259.20:
+        irrf = 0.0
+    elif salario <= 2826.65:
+        irrf = salario * 0.075
+    elif salario <= 3751.05:
+        irrf = salario * 0.15
+    elif salario <= 4664.68:
+        irrf = salario * 0.225
+    else:
+        irrf = salario * 0.275
+
+    deducao_dependentes = 189.59  
+    irrf -= deducao_dependentes
+    
+    return max(irrf, 0)
+
+def calcular_descontos(salario, vale_transporte, vale_refeicao):
+    inss = calcular_inss(salario)
+    irrf = calcular_irrf(salario)
+    
+    desconto_vale_transporte = salario * 0.06 if vale_transporte else 0
+    desconto_vale_refeicao = vale_refeicao * 0.20
+    desconto_plano_saude = 150.00
+
+    total_descontos = inss + irrf + desconto_vale_transporte + desconto_vale_refeicao + desconto_plano_saude
+    salario_liquido = salario - total_descontos
+    
+    return salario_liquido
+
+matricula = input("Digite a matrícula do funcionário: ")
+senha = input("Digite a senha do funcionário: ")
+
+salario = float(input("Digite o salário base do funcionário (R$): "))
+vale_transporte = input("Deseja receber vale transporte? (s/n): ").strip().lower() == 's'
+vale_refeicao = float(input("Digite o valor do vale refeição fornecido pela empresa (R$): "))
+
+salario_liquido = calcular_descontos(salario, vale_transporte, vale_refeicao)
+
+print(f"Salário líquido do funcionário: R$ {salario_liquido:.2f}")
